@@ -1,8 +1,11 @@
 'use strict';
+global.__dataDir = './data';
+
+require('module-alias/register');
 let express = require('express');
 let bodyParser = require('body-parser');
 
-let users = require('./routers/users')
+let users = require('@routers/users')
 
 let app = express();
 app.use(bodyParser.json());
@@ -20,24 +23,24 @@ let server = app.listen(8081, function () {
 
 /*
 {
-   "user1" : {
-      "name" : "mahesh",
-	  "password" : "password1",
-	  "profession" : "teacher",
-	  "id": 1
-   },
-   "user2" : {
-      "name" : "suresh",
-	  "password" : "password2",
-	  "profession" : "librarian",
-	  "id": 2
-   },
-   "user3" : {
-      "name" : "ramesh",
-	  "password" : "password3",
-	  "profession" : "clerk",
-	  "id": 3
-   }
+  "user1": {
+    "name": "Natalie",
+    "password": "password1",
+    "profession": "developer",
+    "id": 1
+  },
+  "user2": {
+    "name": "Lea",
+    "password": "password2",
+    "profession": "super-developer",
+    "id": 2
+  },
+  "user3": {
+    "name": "Artem",
+    "password": "password3",
+    "profession": "god-developer",
+    "id": 3
+  }
 }
 
 
