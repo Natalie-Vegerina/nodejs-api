@@ -14,7 +14,7 @@ const list = (callback) =>
 const save = (users, callback) =>
     fs.writeFile(`${__dataDir}/users.json`, JSON.stringify(users), function (err, data) {
         if (err) {
-            // TODO: throw
+            // TODO: Natalie - throw
             console.log(err);
             return;
         }
