@@ -4,7 +4,7 @@ let usersService = require('@services/users');
 let router = express.Router();
 
 router.get('/', function (req, res) {
-    usersService.list(users => res.json(users));
+    usersService.list(res.json.bind(res));
 });
 
 /*router.delete('/:id', function (req, res) {
@@ -25,7 +25,7 @@ router.get('/', function (req, res) {
 });*/
 
 router.delete('/:id', function (req, res) {
-    usersService.remove(req.params.id, users => res.json(users));
+    usersService.remove(req.params.id, res.json.bind(res));
 });
 
 router.post('/', function (req, res) {

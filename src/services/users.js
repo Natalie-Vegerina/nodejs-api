@@ -1,7 +1,8 @@
 let fs = require('fs');
+let {dataDir} = require('@root/config');
 
 const list = (callback) =>
-    fs.readFile(`${__dataDir}/users.json`, 'utf8', (err, data) => {
+    fs.readFile(`${dataDir}/users.json`, 'utf8', (err, data) => {
         if (err) {
             // TODO: throw
             console.log(err);
@@ -12,7 +13,7 @@ const list = (callback) =>
     });
 
 const save = (users, callback) =>
-    fs.writeFile(`${__dataDir}/users.json`, JSON.stringify(users), function (err, data) {
+    fs.writeFile(`${dataDir}/users.json`, JSON.stringify(users), function (err, data) {
         if (err) {
             // TODO: Natalie - throw
             console.log(err);
