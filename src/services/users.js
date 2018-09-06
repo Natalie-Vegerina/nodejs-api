@@ -23,21 +23,74 @@ const save = (users, callback) =>
         callback(users);
     });
 
-const addNewUser = (users, newUser) => {
-    return {...users, ...{["user" + newUser.id]: newUser}};
+const addNewUser = (users, newUser, callback) => {
+    let updatedUsers = {...users, ...{["user" + newUser.id]: newUser}};
+    save(updatedUsers, callback);
 };
 
 const add = (newUser, callback) => {
-    list(users => save(addNewUser(users, newUser), callback));
+    list(users => addNewUser(users, newUser, callback));
 };
 
-const removeUser = (users, id) => {
-    delete users["user" + id];
-    return users;
+const removeUser = users => {
+    return (id, callback) => {
+        delete users["user" + id];
+        save(users, callback);
+    };
 };
 
+const removeUser2 = (loadUsers) => {
+    return (id, callback) =>
+        () => loadUsers(removeUser);
+    /*
+    let updatedUsers = users;
+    delete updatedUsers["user" + id];
+    save(updatedUsers, callback);*/
+};
+
+const removeUser3 = (id, callback) => {
+    return users => {
+        delete users["user" + id];
+        save(users, callback);
+    };
+};
+
+const removeUser4 = (loadUsers, id, callback) =>
+    loadUsers(removeUser3(id, callback));
+
+
+const removeUser5 = (loadUsers, id, callback) => {
+    let removeUser = users => {
+        delete users["user" + id];
+        save(users, callback);
+    };
+
+    loadUsers(removeUser);
+};
+
+
+const removeUser6 = (loadUsers, id) => {
+    return callback => {
+        let removeUser = users => {
+            delete users["user" + id];
+            save(users, callback);
+        };
+
+        loadUsers(removeUser);
+    }
+};
+
+/*const remove = (id, callback) => {
+    list(users => removeUser(users, id, callback));
+};*/
 const remove = (id, callback) => {
-    list(users => save(removeUser(users, id), callback));
+    removeUser6(list, id)(callback);
+    //removeUser5(list, id, callback);
+    //list(removeUser3(id, callback));
+    //removeUser2(list)(id, callback);
+    // list(removeUser);//(id, callback));
+    // removeUser2(list, id, callback);
+    // list(users => removeUser(users, id, callback));
 };
 
 const usersService = {
