@@ -1,11 +1,15 @@
 'use strict';
-global.__dataDir = './data';
+// global.__dataDir = './data';
 
 require('module-alias/register');
+
+let mongoose = require('mongoose');
 let express = require('express');
 let bodyParser = require('body-parser');
 
-let users = require('@routers/users')
+let users = require('@routers/users');
+
+mongoose.connect('mongodb://localhost/local');
 
 let app = express();
 app.use(bodyParser.json());
@@ -19,35 +23,3 @@ let server = app.listen(8081, function () {
     console.log("Example app listening at http://%s:%s", host, port)
 
 });
-
-
-/*
-{
-  "user1": {
-    "name": "Natalie",
-    "password": "password1",
-    "profession": "developer",
-    "id": 1
-  },
-  "user2": {
-    "name": "Lea",
-    "password": "password2",
-    "profession": "super-developer",
-    "id": 2
-  },
-  "user3": {
-    "name": "Artem",
-    "password": "password3",
-    "profession": "god-developer",
-    "id": 3
-  }
-}
-
-
-{
-      "name" : "mohit",
-      "password" : "password4",
-      "profession" : "teacher",
-      "id": 4
-   }
-*/
