@@ -1,24 +1,10 @@
 let User = require('@models/user');
-let {NotFoundError, UnknownError} = require('@errors/');
+let {NotFoundError} = require('@errors/');
 
-const list = async () => {
-    try {
-        return await User.find();
-    }
-    catch (error) {
-        throw new UnknownError("Failed to list users", 500);
-    }
-};
+const list = async () => await User.find();
 
 const get = async id => {
-    let user;
-    try {
-        user = await User.findOne({_id: id});
-    }
-    catch (error) {
-        throw new UnknownError("Failed to get user", 500);
-    }
-
+    let user = await User.findOne({_id: id});
     if(!user) {
         throw new NotFoundError("User with specified id was not found");
     }
@@ -26,25 +12,15 @@ const get = async id => {
     return user;
 };
 
-const add = async user => {
-    try {
-        return await User.create({...user});
-    }
-    catch (error) {
-        throw new UnknownError("Failed to create user", 500);
-    }
-};
+const add = async user => await User.create({...user});
 
 const remove = async id => {
-    let result;
-    try {
-        result = await User.deleteOne({_id: id});
-    }
-    catch(error) {
-        throw new UnknownError("Failed to delete user", 500);
-    }
-
-    if (result.n === 0) {
+    // let result = await User.deleteOne({_id: id});
+    // if (result.n === 0) {
+    //     throw new NotFoundError();
+    // }
+    let result = await User.remove({_id: id});
+    if (!result) {
         throw new NotFoundError();
     }
 };

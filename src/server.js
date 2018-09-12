@@ -13,7 +13,9 @@ mongoose.connect('mongodb://localhost/local');
 
 let app = express();
 app.use(bodyParser.json());
-app.use('/users', users);
+app.use('/users', users, function(err) {
+    console.log(err);
+});
 
 let server = app.listen(8081, function () {
 

@@ -3,26 +3,47 @@ let usersService = require('@services/users');
 let router = express.Router();
 
 router.get('/', async function (req, res) {
-    const users = await usersService.list();
-    res.json(users);
+    // try {
+        const users = await usersService.list();
+        res.json(users);
+    // }
+    // catch (err) {
+    //     res.status(err.status || 500)
+    //         .send(err.message || "Something wicked this way came");
+    // }
 });
 
 router.get('/:id', async function (req, res) {
-    usersService.get(req.params.id)
-        .then(user => res.status(200).json(user))
-        .catch(err => res.status(err.status).send(err.message));
+    try {
+        const user = await usersService.get(req.params.id);
+        res.status(200).json(user)
+    }
+    catch (err) {
+        res.status(err.status || 500)
+            .send(err.message || "Something wicked this way came");
+    }
 });
 
 router.delete('/:id', async function (req, res) {
-    usersService.remove(req.params.id)
-        .then(() => res.status(204).send())
-        .catch(err => res.status(err.status).send(err.message));
+    try {
+        await usersService.remove(req.params.id);
+        res.status(204).send();
+    }
+    catch (err) {
+        res.status(err.status || 500)
+            .send(err.message || "Something wicked this way came");
+    }
 });
 
 router.post('/', async function (req, res) {
-    usersService.add(req.body)
-        .then(user => res.status(201).json(user))
-        .catch(err => res.status(err.status).send(err.message));
+    try {
+        const user = await usersService.add(req.body);
+        res.status(201).json(user);
+    }
+    catch (err) {
+        res.status(err.status || 500)
+            .send(err.message || "Something wicked this way came");
+    }
 });
 
 module.exports = router;
