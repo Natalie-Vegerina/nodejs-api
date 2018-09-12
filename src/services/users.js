@@ -14,12 +14,13 @@ const get = async id => {
 
 const add = async user => await User.create({...user});
 
+const update = async (id, user) => {
+    await User.updateOne({ _id: id }, { $set: { ...user }});
+    return await get(id);
+};
+
 const remove = async id => {
-    // let result = await User.deleteOne({_id: id});
-    // if (result.n === 0) {
-    //     throw new NotFoundError();
-    // }
-    let result = await User.remove({_id: id});
+    let result = await User.deleteOne({_id: id});
     if (!result) {
         throw new NotFoundError();
     }
@@ -29,6 +30,7 @@ const usersService = {
     list,
     get,
     add,
+    update,
     remove
 };
 

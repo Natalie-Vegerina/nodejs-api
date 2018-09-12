@@ -1,13 +1,10 @@
 let {User: UserModel} = require('./mongoose');
 
-async function remove(id) {
+async function deleteOne(id) {
     const result = await UserModel.deleteOne({_id: id});
-    if(result.n === 0) {
-        return false;
-    }
-
-    return true;
+    return result.n !== 0;
 }
+
 async function findOne(id) {
     return UserModel.findOne(id);
 }
@@ -20,11 +17,16 @@ async function create(user) {
     return UserModel.create(user);
 }
 
+async function updateOne(id, user) {
+    return UserModel.updateOne(id, user);
+}
+
 const User = {
-    remove,
-    find,//: UserModel.find.bind(UserModel),
-    findOne,//: UserModel.findOne.bind(UserModel),
-    create//: UserModel.create.bind(UserModel)
+    deleteOne,
+    find,
+    findOne,
+    create,
+    updateOne
 };
 
 module.exports = User;

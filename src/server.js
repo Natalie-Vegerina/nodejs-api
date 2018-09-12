@@ -1,15 +1,16 @@
 'use strict';
-// global.__dataDir = './data';
 
 require('module-alias/register');
 
-let mongoose = require('mongoose');
-let express = require('express');
-let bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-let users = require('@routers/users');
+const users = require('@routers/users');
+const config = require('config');
+const mongoConfig = config.get('mongodb');
 
-mongoose.connect('mongodb://localhost/local');
+mongoose.connect(mongoConfig.connectionString, { useNewUrlParser: true });
 
 let app = express();
 app.use(bodyParser.json());
