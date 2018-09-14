@@ -5,7 +5,7 @@ const list = async () => await User.find();
 
 const get = async id => {
     let user = await User.findOne({_id: id});
-    if(!user) {
+    if (!user) {
         throw new NotFoundError("User with specified id was not found");
     }
 
@@ -15,7 +15,7 @@ const get = async id => {
 const add = async user => await User.create({...user});
 
 const update = async (id, user) => {
-    await User.updateOne({ _id: id }, { $set: { ...user }});
+    await User.updateOne({_id: id}, {$set: {...user}});
     return await get(id);
 };
 

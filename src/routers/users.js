@@ -1,60 +1,31 @@
-let express = require('express');
-let usersService = require('@services/users');
-let router = express.Router();
+const express = require('express');
+const usersService = require('@services/users');
+const {userValidator} = require('@validation/');
+const router = express.Router();
 
 router.get('/', async function (req, res) {
-    // try {
-        const users = await usersService.list();
-        res.json(users);
-    // }
-    // catch (err) {
-    //     res.status(err.status || 500)
-    //         .send(err.message || "Something wicked this way came");
-    // }
+    const users = await usersService.list();
+    res.json(users);
 });
 
 router.get('/:id', async function (req, res) {
-    try {
-        const user = await usersService.get(req.params.id);
-        res.status(200).json(user)
-    }
-    catch (err) {
-        res.status(err.status || 500)
-            .send(err.message || "Something wicked this way came");
-    }
+    const user = await usersService.get(req.params.id);
+    res.status(200).json(user)
 });
 
 router.delete('/:id', async function (req, res) {
-    try {
-        await usersService.remove(req.params.id);
-        res.status(204).send();
-    }
-    catch (err) {
-        res.status(err.status || 500)
-            .send(err.message || "Something wicked this way came");
-    }
+    await usersService.remove(req.params.id);
+    res.status(204).send();
 });
 
-router.post('/', async function (req, res) {
-    try {
-        const user = await usersService.add(req.body);
-        res.status(201).json(user);
-    }
-    catch (err) {
-        res.status(err.status || 500)
-            .send(err.message || "Something wicked this way came");
-    }
+router.post('/', [userValidator.cleanUp, userValidator.validate()], async function (req, res) {
+    let user = await usersService.add(req.body);
+    res.status(201).json(user);
 });
 
-router.post('/:id', async function (req, res) {
-    try {
-        const user = await usersService.update(req.params.id, req.body);
-        res.status(200).json(user);
-    }
-    catch (err) {
-        res.status(err.status || 500)
-            .send(err.message || "Something wicked this way came");
-    }
+router.post('/:id', [userValidator.cleanUp, userValidator.validate()], async function (req, res) {
+    const user = await usersService.update(req.params.id, req.body);
+    res.status(200).json(user);
 });
 
 module.exports = router;
