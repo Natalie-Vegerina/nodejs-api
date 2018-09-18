@@ -1,5 +1,23 @@
+const ProfileSchema = {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+        type: {
+            type: 'string'
+        },
+        company: {
+            type: 'string'
+        },
+        profession: {
+            type: 'string'
+        }
+    }
+};
+
+
 const UserSchema = {
-  type: 'object',
+    type: 'object',
+    additionalProperties: false,
     required: ['firstName', 'lastName', 'email', 'password'],
     properties: {
         firstName: {
@@ -29,8 +47,9 @@ const UserSchema = {
             minLength: 8,
             maxLength: 20
         },
-        profession: {
-            type: 'string'
+        profiles: {
+            type: 'array',
+            items: ProfileSchema
         }
     }
 };

@@ -6,26 +6,28 @@ const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const users = require('@routers/users');
+const routers = require('@routers/');
 const config = require('config');
 const mongoConfig = config.get('mongodb');
-const {ValidationError} = require('express-json-validator-middleware');
+const Ajv = require('ajv');
 
 mongoose.connect(mongoConfig.connectionString, {useNewUrlParser: true});
 
 const rewriteValidationError = error =>
-    error.validationErrors.body.map(err => `${err.dataPath.substring(1)} ${err.message}`);
+    error.errors.map(err => `${err.dataPath.substring(1)} ${err.message}`);
 
 let app = express();
 app.use(bodyParser.json());
-app.use('/users', users);
+app.use('/projects', routers.Projects);
+app.use('/users', routers.Users);
+app.use('/tasks', routers.Tasks);
 
 app.use(function (err, req, res, next) {
     if (res.headersSent) {
         return next(err)
     }
 
-    if (err instanceof ValidationError) {
+    if (err instanceof Ajv.ValidationError) {
         res.status(400).send(rewriteValidationError(err));
         return;
     }
