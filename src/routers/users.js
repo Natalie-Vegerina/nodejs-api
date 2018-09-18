@@ -18,12 +18,12 @@ router.delete('/:id', async function (req, res) {
     res.status(204).send();
 });
 
-router.post('/', [userValidator.validate()], async function (req, res) {
+router.post('/', [userValidator], async function (req, res) {
     let user = await usersService.add(req.body);
     res.status(201).json(user);
 });
 
-router.put('/:id', [userValidator.validate()], async function (req, res) {
+router.put('/:id', [userValidator], async function (req, res) {
     const user = await usersService.update(req.params.id, req.body);
     res.status(200).json(user);
 });
