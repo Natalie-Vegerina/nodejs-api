@@ -1,6 +1,6 @@
 const express = require('express');
 const tasksService = require('@services/tasks');
-// const {userValidator} = require('@validation/');
+const {taskValidator} = require('@validation/');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -18,12 +18,12 @@ router.delete('/:id', async function (req, res) {
     res.status(204).send();
 });
 
-router.post('/', /*[userValidator.cleanUp, userValidator.validate()],*/ async function (req, res) {
+router.post('/', taskValidator, async function (req, res) {
     let task = await tasksService.add(req.body);
     res.status(201).json(task);
 });
 
-router.put('/:id', /*[userValidator.cleanUp, userValidator.validate()],*/ async function (req, res) {
+router.put('/:id', taskValidator, async function (req, res) {
     const task = await tasksService.update(req.params.id, req.body);
     res.status(200).json(task);
 });

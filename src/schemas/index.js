@@ -1,9 +1,9 @@
-const userSchema = require('./userSchema');
-const projectSchema = require('./projectSchema');
-const taskSchema = require('./taskSchema');
+const UserSchema = require('./userSchema');
+const ProjectSchema = require('./projectSchema');
+const TaskSchema = require('./taskSchema');
 
 module.exports = {
-    userSchema,
-    projectSchema,
-    taskSchema
+    UserSchema,
+    ProjectSchema,
+    TaskSchema
 };

@@ -1,5 +1,7 @@
-const ProjectSchema = {
+const TaskSchema = {
     type: 'object',
+    additionalProperties: false,
+    required: ['project', 'reporter', 'summary'],
     properties: {
         project: {
             type: 'string'
@@ -18,9 +20,10 @@ const ProjectSchema = {
         },
         status: {
             type: 'string',
+            default: 'Open',
             enum: ["Open", "In Progress", "Done"]
         }
     }
 };
 
-module.exports = ProjectSchema;
+module.exports = TaskSchema;
