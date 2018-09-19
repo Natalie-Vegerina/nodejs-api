@@ -1,7 +1,7 @@
 let Project = require('@models/project');
 let {NotFoundError} = require('@errors/');
 
-const list = async () => await Project.list();
+const list = async () => Project.list();
 
 const get = async (id) => {
     let project = await Project.get(id);
@@ -12,10 +12,23 @@ const get = async (id) => {
     return project;
 };
 
-const add = async project => await Project.add({...project});
+const add = async project => {
+    try {
+        return Project.add({...project});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to save entity: " + e.message, 400);
+    }
+};
 
 const update = async (id, project) => {
-    await Project.update({_id: id}, {$set: {...project}});
+    try {
+        await Project.update({_id: id}, {$set: {...project}});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+    }
+
     return await get(id);
 };
 

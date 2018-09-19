@@ -1,10 +1,11 @@
 let Task = require('@models/task');
 let {NotFoundError} = require('@errors/');
+const {DatabaseError} = require('@errors/');
 
 const list = async () => await Task.list();
 
 const get = async (id, keysToPopulate) => {
-    if(Array.isArray(keysToPopulate)) {
+    if (Array.isArray(keysToPopulate)) {
         keysToPopulate = keysToPopulate.map(s => s.trim()).join(' ');
     }
 
@@ -16,11 +17,24 @@ const get = async (id, keysToPopulate) => {
     return task;
 };
 
-const add = async task => await Task.add({...task});
+const add = async task => {
+    try {
+        return Task.add({...task});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to save entity: " + e.message, 400);
+    }
+};
 
 const update = async (id, task) => {
-    await Task.update({_id: id}, {$set: {...task}});
-    return await get(id);
+    try {
+        await Task.update({_id: id}, {$set: {...task}});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+    }
+
+    return get(id);
 };
 
 const remove = async id => {

@@ -1,4 +1,5 @@
 let {User: UserModel} = require('./mongoose');
+const {Validation} = require('@utils/');
 
 async function remove(id) {
     const result = await UserModel.deleteOne({_id: id});
@@ -6,12 +7,18 @@ async function remove(id) {
 }
 
 async function get(id, keysToPopulate) {
-    let promise = UserModel.findById(id);
+    /*let promise = UserModel.findById(id);
     if(keysToPopulate) {
         promise = promise.then(user => UserModel.populate(user, keysToPopulate));
     }
 
-    return promise;
+    return promise;*/
+    let user = await UserModel.findById(id);
+    if (keysToPopulate) {
+        user = await UserModel.populate(user, keysToPopulate);
+    }
+
+    return user;
 }
 
 async function list() {
@@ -36,7 +43,7 @@ async function updateProfile(id, profile) {
 const User = {
     remove,
     list,
-    get,
+    get: Validation.withIdValidation(get),
     add,
     update,
     updateProfile

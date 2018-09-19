@@ -4,7 +4,7 @@ let {NotFoundError} = require('@errors/');
 const list = async () => await User.list();
 
 const get = async (id, keysToPopulate) => {
-    if(Array.isArray(keysToPopulate)) {
+    if (Array.isArray(keysToPopulate)) {
         keysToPopulate = keysToPopulate.map(s => s.trim()).join(' ');
     }
 
@@ -16,16 +16,35 @@ const get = async (id, keysToPopulate) => {
     return user;
 };
 
-const add = async user => await User.add({...user});
+const add = async user => {
+    try {
+        return User.add({...user});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to save entity: " + e.message, 400);
+    }
+};
 
 const update = async (id, user) => {
-    await User.update({_id: id}, {$set: {...user}});
-    return await get(id);
+    try {
+        await User.update({_id: id}, {$set: {...user}});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+    }
+
+    return get(id);
 };
 
 const updateProfile = async (id, profile) => {
-    await User.updateProfile({_id: id}, {...profile});
-    return await get(id);
+    try {
+        await User.updateProfile({_id: id}, {...profile});
+    }
+    catch (e) {
+        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+    }
+
+    return get(id);
 };
 
 const remove = async id => {
