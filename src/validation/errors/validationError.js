@@ -3,7 +3,7 @@ const Ajv = require('ajv');
 
 class ValidationError extends BaseError {
     constructor(error) {
-        super();
+        super(400, false);
 
         this.name = this.constructor.name;
         if(error instanceof Ajv.ValidationError) {

@@ -1,8 +1,16 @@
 class BaseError extends Error {
-    constructor(message) {
+    constructor(status = 500, loggable = true) {
         super();
 
-        this.message = message || '';
+        this.name = this.constructor.name;
+        if(status && 'boolean' === typeof status) {
+            this.status = 500;
+            this.loggable = status;
+        }
+        else {
+            this.status = status;// || 500;
+            this.loggable = loggable;// || true;
+        }
     }
 
     preserveStack (original) {

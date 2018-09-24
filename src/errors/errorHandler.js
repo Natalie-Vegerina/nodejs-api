@@ -1,5 +1,6 @@
 const {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
 const {ValidationError} = require('@validationErrors/');
+const BaseError = require('./baseError');
 const Ajv = require('ajv');
 const moment = require('moment');
 //
@@ -22,6 +23,9 @@ const handle = (err, res) => {
         res.status(400).send(rewriteValidationError(err));
         return;
     }*/
+
+    // proper handling
+    /*
     if (err instanceof ValidationError) {
         res.status(400).send(err.message);
         return;
@@ -34,6 +38,19 @@ const handle = (err, res) => {
     printConsole(err);
     if(err instanceof EntitySaveError) {
         res.status(500).send(err.message);
+    }
+    else {
+        res.status(err.status || 500)
+            .send(err.message || "Something wicked this way came");
+    }*/
+
+    // pretty proper handling
+    if(err instanceof BaseError) {
+        if(err.loggable) {
+            printConsole(err);
+        }
+
+        res.status(err.status).send(err.message);
     }
     else {
         res.status(err.status || 500)

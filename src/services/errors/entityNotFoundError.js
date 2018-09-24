@@ -2,7 +2,7 @@ const BaseError = require('@errors/baseError');
 
 class EntityNotFoundError extends BaseError {
     constructor(message, original) {
-        super();
+        super(404, false);
 
         Error.captureStackTrace(this, this.constructor);
 

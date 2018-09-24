@@ -2,7 +2,7 @@ const BaseError = require('@errors/baseError');
 
 class DatabaseError extends BaseError {
     constructor(message, original) {
-        super();
+        super(500, true);
 
         this.name = this.constructor.name;
         this.message = message ||

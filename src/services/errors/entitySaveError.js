@@ -2,7 +2,7 @@ const BaseError = require('@errors/baseError');
 
 class EntitySaveError extends BaseError {
     constructor(message, original) {
-        super();
+        super(true);
 
         this.name = this.constructor.name;
 

@@ -1,13 +1,15 @@
-class InvalidIdError extends Error {
-    constructor(message) {
-        super();
+const BaseError = require('@errors/baseError');
 
-        Error.captureStackTrace(this, this.constructor);
+class InvalidIdError extends BaseError {
+    constructor(message) {
+        super(400, false);
 
         this.name = this.constructor.name;
 
         this.message = message ||
             'Invalid id';
+
+        this.preserveStack();
     }
 }
 
