@@ -1,9 +1,10 @@
 const lodash = require('lodash');
 
-const removeExtraProperties = (model, schema) => lodash.pick(model, schema);
+const removeExtraProperties = (model, schema) =>
+    lodash.pick(model, schema);
 
-const sanitize = {
+const Sanitation = {
     removeExtraProperties
 };
 
-module.exports = sanitize;
+module.exports = Sanitation;

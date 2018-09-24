@@ -1,5 +1,5 @@
 const {Task: TaskModel} = require('./mongoose');
-// const {DatabaseError} = require('@errors/');
+const {Validation} = require('@utils/');
 
 async function remove(id) {
     const result = await TaskModel.deleteOne({_id: id});
@@ -7,12 +7,6 @@ async function remove(id) {
 }
 
 async function get(id, keysToPopulate) {
-    /*let promise = TaskModel.findById(id);
-    if(keysToPopulate) {
-        promise = promise.then(task => TaskModel.populate(task, keysToPopulate));
-    }
-
-    return promise;*/
     let task = await TaskModel.findById(id);
     if(keysToPopulate) {
         task = await TaskModel.populate(task, keysToPopulate);
@@ -26,12 +20,6 @@ async function list() {
 }
 
 async function add(task) {
-    /*try {
-        return await TaskModel.create(task);
-    }
-    catch (e) {
-        throw new DatabaseError("Failed to save Task. " + e.message);
-    }*/
     return TaskModel.create(task);
 }
 
@@ -40,11 +28,11 @@ async function update(id, task) {
 }
 
 const Task = {
-    remove,
+    remove: Validation.withIdValidation(remove),
     list,
-    get,
+    get: Validation.withIdValidation(get),
     add,
-    update
+    update: Validation.withIdValidation(update)
 };
 
 module.exports = Task;

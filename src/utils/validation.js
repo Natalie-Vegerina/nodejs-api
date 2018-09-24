@@ -24,5 +24,6 @@ const withIdValidation = func => {
 };
 
 module.exports = {
-    withIdValidation
+    withIdValidation,
+    isIdValid
 };

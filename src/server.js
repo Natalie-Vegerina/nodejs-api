@@ -14,7 +14,10 @@ const Ajv = require('ajv');
 mongoose.connect(mongoConfig.connectionString, {useNewUrlParser: true});
 
 const rewriteValidationError = error =>
-    error.errors.map(err => `${err.dataPath.substring(1)} ${err.message}`);
+    error.errors.map(err => {
+        let message = err.params.keyword === 'objectId' ? 'was not found' : err.message;
+        return `${err.dataPath.substring(1)} ${message}`;
+    });
 
 let app = express();
 app.use(bodyParser.json());

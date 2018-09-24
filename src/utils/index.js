@@ -1,7 +1,7 @@
-const sanitize = require('./sanitize');
+const Sanitation = require('./sanitize');
 const Validation = require('./validation');
 
 module.exports = {
-    sanitize,
+    Sanitation,
     Validation
 };
