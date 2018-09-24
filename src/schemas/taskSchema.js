@@ -4,16 +4,13 @@ const TaskSchema = {
     required: ['project', 'reporter', 'summary'],
     properties: {
         project: {
-            type: 'string',
-            objectId: true
+            type: 'string'
         },
         assignee: {
-            type: 'string',
-            objectId: true
+            type: 'string'
         },
         reporter: {
-            type: 'string',
-            objectId: true
+            type: 'string'
         },
         summary: {
             type: 'string'

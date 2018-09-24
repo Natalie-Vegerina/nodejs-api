@@ -1,6 +1,6 @@
 let Task = require('@models/task');
-let {NotFoundError} = require('@errors/');
-const {DatabaseError} = require('@errors/');
+let {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
+const {InvalidIdError} = require('@dataErrors/');
 
 const list = async () => await Task.list();
 
@@ -11,7 +11,7 @@ const get = async (id, keysToPopulate) => {
 
     let task = await Task.get(id, keysToPopulate);
     if (!task) {
-        throw new NotFoundError("Task with specified id was not found");
+        throw new EntityNotFoundError("Task with specified id was not found", e);
     }
 
     return task;
@@ -19,10 +19,10 @@ const get = async (id, keysToPopulate) => {
 
 const add = async task => {
     try {
-        return Task.add({...task});
+        return await Task.add({...task});
     }
     catch (e) {
-        throw new DatabaseError("Failed to save entity: " + e.message, 400);
+        throw new EntitySaveError("Failed to save task", e);
     }
 };
 
@@ -31,16 +31,31 @@ const update = async (id, task) => {
         await Task.update({_id: id}, {$set: {...task}});
     }
     catch (e) {
-        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("Task with specified id was not found", e);
+        }
+
+        throw new EntitySaveError("Failed to update task", e);
     }
 
     return get(id);
 };
 
 const remove = async id => {
-    let result = await Task.remove({_id: id});
+    let result;
+    try {
+        result = await Task.remove({_id: id});
+    }
+    catch (e) {
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("Task with specified id was not found", e);
+        }
+
+        throw new EntitySaveError("Failed to remove task", e);
+    }
+
     if (!result) {
-        throw new NotFoundError();
+        throw new EntityNotFoundError("Task with specified id was not found", e);
     }
 };
 

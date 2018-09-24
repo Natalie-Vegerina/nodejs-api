@@ -9,15 +9,16 @@ const bodyParser = require('body-parser');
 const routers = require('@routers/');
 const config = require('config');
 const mongoConfig = config.get('mongodb');
-const Ajv = require('ajv');
+// const {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
+// const Ajv = require('ajv');
+const {ErrorHandler} = require('@errors/');
 
 mongoose.connect(mongoConfig.connectionString, {useNewUrlParser: true});
 
-const rewriteValidationError = error =>
+/*const rewriteValidationError = error =>
     error.errors.map(err => {
-        let message = err.params.keyword === 'objectId' ? 'was not found' : err.message;
-        return `${err.dataPath.substring(1)} ${message}`;
-    });
+        return `${err.dataPath.substring(1)} ${err.message}`;
+    });*/
 
 let app = express();
 app.use(bodyParser.json());
@@ -30,14 +31,21 @@ app.use(function (err, req, res, next) {
         return next(err)
     }
 
-    if (err instanceof Ajv.ValidationError) {
+    // ErrorHandler.printConsole(err);
+    ErrorHandler.handle(err, res);
+    /*if (err instanceof Ajv.ValidationError) {
         res.status(400).send(rewriteValidationError(err));
-        return;
     }
-
-    console.log(err);
-    res.status(err.status || 500)
-        .send(err.message || "Something wicked this way came");
+    else if(err instanceof EntityNotFoundError) {
+        res.status(404).send(err.message);
+    }
+    else if(err instanceof EntitySaveError) {
+        res.status(500).send(err.message);
+    }
+    else {
+        res.status(err.status || 500)
+            .send(err.message || "Something wicked this way came");
+    }*/
 });
 
 let server = app.listen(8081, function () {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {InvalidIdError} = require('@dataErrors/');
 
 const isIdValid = (id) => {
     if (!id) {
@@ -19,7 +20,7 @@ const withIdValidation = func => {
             return func(id, ...rest);
         }
 
-        return null;
+        throw new InvalidIdError();
     }
 };
 

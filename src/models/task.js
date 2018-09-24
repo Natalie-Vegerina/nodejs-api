@@ -1,30 +1,51 @@
 const {Task: TaskModel} = require('./mongoose');
-const {Validation} = require('@utils/');
+const {Validation} = require('@dataValidation/');
+const {DatabaseError} = require('@dataErrors/');
 
 async function remove(id) {
-    const result = await TaskModel.deleteOne({_id: id});
-    return result.n !== 0;
+    try {
+        const result = await TaskModel.deleteOne({_id: id});
+        return result.n !== 0;
+    } catch (e) {
+        throw new DatabaseError(e.message, e);
+    }
 }
 
 async function get(id, keysToPopulate) {
-    let task = await TaskModel.findById(id);
-    if(keysToPopulate) {
-        task = await TaskModel.populate(task, keysToPopulate);
-    }
+    try {
+        let task = await TaskModel.findById(id);
+        if (task && keysToPopulate) {
+            task = await TaskModel.populate(task, keysToPopulate);
+        }
 
-    return task;
+        return task;
+    } catch (e) {
+        throw new DatabaseError(e.message, e);
+    }
 }
 
 async function list() {
-    return TaskModel.find();
+    try {
+        return await TaskModel.find();
+    } catch (e) {
+        throw new DatabaseError(e.message, e);
+    }
 }
 
 async function add(task) {
-    return TaskModel.create(task);
+    try {
+        return await TaskModel.create(task);
+    } catch (e) {
+        throw new DatabaseError(e.message, e);
+    }
 }
 
 async function update(id, task) {
-    return TaskModel.updateOne(id, task);
+    try {
+        return await TaskModel.updateOne(id, task);
+    } catch (e) {
+        throw new DatabaseError(e.message, e);
+    }
 }
 
 const Task = {

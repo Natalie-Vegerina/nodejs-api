@@ -1,12 +1,13 @@
 let Project = require('@models/project');
-let {NotFoundError} = require('@errors/');
+let {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
+const {InvalidIdError} = require('@dataErrors/');
 
 const list = async () => Project.list();
 
 const get = async (id) => {
     let project = await Project.get(id);
     if (!project) {
-        throw new NotFoundError("Project with specified id was not found");
+        throw new EntityNotFoundError("Project with specified id was not found");
     }
 
     return project;
@@ -17,7 +18,7 @@ const add = async project => {
         return Project.add({...project});
     }
     catch (e) {
-        throw new DatabaseError("Failed to save entity: " + e.message, 400);
+        throw new EntitySaveError("Failed to save project");
     }
 };
 
@@ -26,16 +27,31 @@ const update = async (id, project) => {
         await Project.update({_id: id}, {$set: {...project}});
     }
     catch (e) {
-        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("Project with specified id was not found");
+        }
+
+        throw new EntitySaveError("Failed to update project");
     }
 
     return await get(id);
 };
 
 const remove = async id => {
-    let result = await Project.remove({_id: id});
+    let result;
+    try {
+        result = await Project.remove({_id: id});
+    }
+    catch (e) {
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("Project with specified id was not found");
+        }
+
+        throw new EntitySaveError("Failed to remove project");
+    }
+
     if (!result) {
-        throw new NotFoundError();
+        throw new EntityNotFoundError();
     }
 };
 

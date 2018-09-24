@@ -1,5 +1,6 @@
 let User = require('@models/user');
-let {NotFoundError} = require('@errors/');
+let {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
+const {InvalidIdError} = require('@dataErrors/');
 
 const list = async () => await User.list();
 
@@ -10,7 +11,7 @@ const get = async (id, keysToPopulate) => {
 
     let user = await User.get(id, keysToPopulate);
     if (!user) {
-        throw new NotFoundError("User with specified id was not found");
+        throw new EntityNotFoundError("User with specified id was not found");
     }
 
     return user;
@@ -21,7 +22,7 @@ const add = async user => {
         return User.add({...user});
     }
     catch (e) {
-        throw new DatabaseError("Failed to save entity: " + e.message, 400);
+        throw new EntitySaveError("Failed to save user");
     }
 };
 
@@ -30,7 +31,11 @@ const update = async (id, user) => {
         await User.update({_id: id}, {$set: {...user}});
     }
     catch (e) {
-        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("User with specified id was not found");
+        }
+
+        throw new EntitySaveError("Failed to update user");
     }
 
     return get(id);
@@ -41,16 +46,31 @@ const updateProfile = async (id, profile) => {
         await User.updateProfile({_id: id}, {...profile});
     }
     catch (e) {
-        throw new DatabaseError("Failed to update entity: " + e.message, 400);
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("User with specified id was not found");
+        }
+
+        throw new EntitySaveError("Failed to update user");
     }
 
     return get(id);
 };
 
 const remove = async id => {
-    let result = await User.remove({_id: id});
+    let result;
+    try {
+        result = await User.remove({_id: id});
+    }
+    catch (e) {
+        if(e instanceof InvalidIdError) {
+            throw new EntityNotFoundError("User with specified id was not found");
+        }
+
+        throw new EntitySaveError("Failed to remove user");
+    }
+
     if (!result) {
-        throw new NotFoundError();
+        throw new EntityNotFoundError();
     }
 };
 

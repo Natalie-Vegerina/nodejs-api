@@ -1,4 +1,4 @@
-class NotFoundError extends Error {
+class InvalidIdError extends Error {
     constructor(message) {
         super();
 
@@ -7,10 +7,8 @@ class NotFoundError extends Error {
         this.name = this.constructor.name;
 
         this.message = message ||
-            'Entity was not found';
-
-        this.status = 404;
+            'Invalid id';
     }
 }
 
-module.exports = NotFoundError;
+module.exports = InvalidIdError;

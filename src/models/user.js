@@ -1,5 +1,5 @@
 const {User: UserModel} = require('./mongoose');
-const {Validation} = require('@utils/');
+const {Validation} = require('@dataValidation/');
 
 async function remove(id) {
     const result = await UserModel.deleteOne({_id: id});
@@ -27,6 +27,7 @@ async function update(id, user) {
     return UserModel.updateOne(id, user);
 }
 
+// TODO: Natalie - throw NotFound if user or profile not found?
 async function updateProfile(id, profile) {
     let user = await findOne(id);
     let existingProfile = user.profiles.id(profile._id);

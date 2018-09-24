@@ -28,7 +28,11 @@
     "@services": "src/services",
     "@middlewars": "src/middlewars",
     "@models": "src/models",
+    "@dataValidation": "src/models/validation",
     "@errors": "src/errors",
+    "@dataErrors": "src/models/errors",
+    "@serviceErrors": "src/services/errors",
+    "@validationErrors": "src/validation/errors",
     "@validation": "src/validation",
     "@utils": "src/utils",
     "@schemas": "src/schemas"

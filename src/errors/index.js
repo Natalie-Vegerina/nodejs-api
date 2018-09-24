@@ -1,5 +1,7 @@
-const NotFoundError = require('./notFoundError');
-const UnknownError = require('./unknownError');
-const DatabaseError = require('./databaseError');
+const BaseError = require('./baseError');
+const ErrorHandler = require('./errorHandler');
 
-module.exports = {NotFoundError, UnknownError, DatabaseError};
+module.exports = {
+    BaseError,
+    ErrorHandler
+};
