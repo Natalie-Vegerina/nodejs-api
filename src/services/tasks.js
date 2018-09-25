@@ -1,5 +1,6 @@
 let Task = require('@models/task');
 let {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
+//  TODO" think about how to make it more abstract, ex. add 'type' property to errors
 const {InvalidIdError} = require('@dataErrors/');
 
 const list = async () => await Task.list();
@@ -11,6 +12,7 @@ const get = async (id, keysToPopulate) => {
 
     let task = await Task.get(id, keysToPopulate);
     if (!task) {
+        //  TODO: unresolved variable e
         throw new EntityNotFoundError("Task with specified id was not found", e);
     }
 
