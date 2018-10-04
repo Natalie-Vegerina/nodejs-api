@@ -17,6 +17,11 @@ const get = async (id, keysToPopulate) => {
     return user;
 };
 
+// TODO: Natalie - validate options. Somehow
+const find = async (options) => {
+    return User.find(options);
+};
+
 const add = async user => {
     try {
         return User.add({...user});
@@ -80,7 +85,8 @@ const UsersService = {
     add,
     update,
     updateProfile,
-    remove
+    remove,
+    find
 };
 
 module.exports = UsersService;

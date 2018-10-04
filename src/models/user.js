@@ -15,6 +15,11 @@ async function get(id, keysToPopulate) {
     return user;
 }
 
+// TODO: Natalie - this is wrong. Need to change options
+async function find(options) {
+    return UserModel.find(options);
+}
+
 async function list() {
     return UserModel.find();
 }
@@ -41,7 +46,8 @@ const User = {
     get: Validation.withIdValidation(get),
     add,
     update : Validation.withIdValidation(update),
-    updateProfile: Validation.withIdValidation(updateProfile)
+    updateProfile: Validation.withIdValidation(updateProfile),
+    find
 };
 
 module.exports = User;

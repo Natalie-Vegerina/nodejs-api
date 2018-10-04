@@ -23,6 +23,11 @@ const signIn = async signInInfo => {
 
 const register = async registrationInfo => {
     // TODO: Natalie - encode password
+    const existingUsers = await UsersService.find({email: registrationInfo.email});
+    if(existingUsers && existingUsers.length > 0) {
+        throw new AuthError("User with such credentials already exists");
+    }
+
     const encodedPassword = registrationInfo.password;
     const user = await UsersService.add({email: registrationInfo.email, password: encodedPassword});
     return signIn(user);
