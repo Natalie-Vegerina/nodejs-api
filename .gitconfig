@@ -1,0 +1,16 @@
+[user]
+	email = natalie.vegerina@gmail.com
+	name = asferata
+[alias]
+	co = checkout
+	a = add .
+	ci = commit
+	cc = commit -m 'Nothing special. Just regular commit.'
+	ps = push
+	pt = push --tags
+	pl = pull
+	st = status
+	br = branch
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
