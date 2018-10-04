@@ -18,7 +18,18 @@ const authenticate = async authInfo => {
 };
 
 const signIn = async signInInfo => {
-    return TokenService.encode({_id: signInInfo._id});
+    const existingUsers = await UsersService.find({email: signInInfo.email});
+    if(!existingUsers || existingUsers.length !== 1) {
+        throw new AuthError("User with such credentials doesn't exist");
+    }
+
+    // TODO: Natalie - compare encoded password
+    const user = existingUsers[0];
+    if(user.password !== signInInfo.password) {
+        throw new AuthError("User with such credentials doesn't exist");
+    }
+
+    return TokenService.encode({_id: user._id});
 };
 
 const register = async registrationInfo => {
@@ -30,7 +41,7 @@ const register = async registrationInfo => {
 
     const encodedPassword = registrationInfo.password;
     const user = await UsersService.add({email: registrationInfo.email, password: encodedPassword});
-    return signIn(user);
+    return user;
 };
 
 const AuthService = {

@@ -17,7 +17,8 @@ router.post('/sign-in', async function(req, res, next) {
 
 router.post('/register', baseValidator.validate(UserRegistrationSchema), async function(req, res, next) {
     try {
-        const token = await AuthService.register(req.body);
+        const user = await AuthService.register(req.body);
+        const token = await AuthService.signIn(req.body);
         res.json({token: token});
     }
     catch (e) {
