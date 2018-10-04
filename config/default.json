@@ -1,5 +1,9 @@
 {
   "mongodb": {
     "connectionString": "mongodb://localhost/local"
+  },
+  "auth": {
+    "secret": "natalie",
+    "tokenLife": 86400
   }
 }

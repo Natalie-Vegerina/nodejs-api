@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const routers = require('@routers/');
+const routes = require('@routes/');
 const config = require('config');
 const mongoConfig = config.get('mongodb');
 // const {EntityNotFoundError, EntitySaveError} = require('@serviceErrors/');
@@ -22,9 +22,10 @@ mongoose.connect(mongoConfig.connectionString, {useNewUrlParser: true});
 
 let app = express();
 app.use(bodyParser.json());
-app.use('/projects', routers.Projects);
-app.use('/users', routers.Users);
-app.use('/tasks', routers.Tasks);
+app.use('/', routes.Auth);
+app.use('/projects', routes.Projects);
+app.use('/users', routes.Users);
+app.use('/tasks', routes.Tasks);
 
 app.use(function (err, req, res, next) {
     if (res.headersSent) {

@@ -74,7 +74,7 @@ const remove = async id => {
     }
 };
 
-const usersService = {
+const UsersService = {
     list,
     get,
     add,
@@ -83,4 +83,4 @@ const usersService = {
     remove
 };
 
-module.exports = usersService;
+module.exports = UsersService;

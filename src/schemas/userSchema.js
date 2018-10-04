@@ -14,7 +14,6 @@ const ProfileSchema = {
     }
 };
 
-
 const UserSchema = {
     type: 'object',
     additionalProperties: false,
