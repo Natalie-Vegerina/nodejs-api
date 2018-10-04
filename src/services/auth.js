@@ -1,5 +1,6 @@
 const TokenService = require('@services/token');
 const UsersService = require('@services/users');
+const {AuthError} = require('@errors/');
 
 const authenticate = async authInfo => {
     if (authInfo.split(' ')[0] !== 'Bearer') {
@@ -24,7 +25,7 @@ const register = async registrationInfo => {
     // TODO: Natalie - encode password
     const encodedPassword = registrationInfo.password;
     const user = await UsersService.add({email: registrationInfo.email, password: encodedPassword});
-    return await signIn(user);
+    return signIn(user);
 };
 
 const AuthService = {
