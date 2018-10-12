@@ -2,6 +2,7 @@ const TokenService = require('@services/token');
 const UsersService = require('@services/users');
 const {AuthError} = require('@errors/');
 
+
 const authenticate = async authInfo => {
     if (authInfo.split(' ')[0] !== 'Bearer') {
         throw new AuthError('Server supports only Bearer-authentication');

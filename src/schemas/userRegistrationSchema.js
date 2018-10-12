@@ -1,8 +1,18 @@
 const UserRegistrationSchema = {
     type: 'object',
     additionalProperties: false,
-    required: ['email', 'password'],
+    required: ['firstName', 'lastName', 'email', 'password'],
     properties: {
+        firstName: {
+            type: 'string',
+            minLength: 2,
+            maxLength: 50
+        },
+        lastName: {
+            type: 'string',
+            minLength: 2,
+            maxLength: 50
+        },
         email: {
             type: 'string',
             format: 'email',
