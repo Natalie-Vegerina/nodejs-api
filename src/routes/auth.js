@@ -1,5 +1,5 @@
 const express = require('express');
-const {AuthService} = require('@services/');
+const {AuthService} = require('@auth/');
 const {baseValidator} = require('@validation/');
 const {UserRegistrationSchema, UserLoginSchema} = require('@schemas/');
 const router = express.Router();

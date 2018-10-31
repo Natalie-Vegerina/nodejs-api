@@ -1,5 +1,5 @@
 const {AuthError} = require('@errors/');
-const {AuthService} = require('@services/');
+const {AuthService} = require('@auth/');
 
 const authenticate = async (req, res, next) => {
     if (!(req.headers && req.headers.authorization)) {

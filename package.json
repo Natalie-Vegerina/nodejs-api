@@ -36,6 +36,7 @@
     "@serviceErrors": "src/services/errors",
     "@validationErrors": "src/validation/errors",
     "@validation": "src/validation",
+    "@auth": "src/auth",
     "@utils": "src/utils",
     "@schemas": "src/schemas"
   }

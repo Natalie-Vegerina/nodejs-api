@@ -1,13 +1,15 @@
 const UsersService = require('./users');
-const projectService = require('./projects');
-const taskService = require('./tasks');
-const TokenService = require('./token');
-const AuthService = require('./auth');
+const ProjectService = require('./projects');
+const TaskService = require('./tasks');
+// const TokenService = require('../auth/token');
+// const AuthService = require('../auth/auth');
+// const Crypto = require('../auth/crypto');
 
 module.exports = {
     UsersService,
-    projectService,
-    taskService,
-    TokenService,
-    AuthService
+    ProjectService,
+    TaskService,
+    // TokenService,
+    // AuthService,
+    // Crypto
 };

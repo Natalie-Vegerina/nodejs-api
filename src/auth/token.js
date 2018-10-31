@@ -4,7 +4,7 @@ const config = require('config');
 
 const encode = async userInfo => {
     return jwt.sign(userInfo, config.auth.secret, { expiresIn: config.auth.tokenLife})
-}
+};
 
 const decode = async token => {
     try {

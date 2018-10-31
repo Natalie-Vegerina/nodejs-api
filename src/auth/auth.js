@@ -1,5 +1,8 @@
-const TokenService = require('@services/token');
-const UsersService = require('@services/users');
+const TokenService = require('./token');
+const {UsersService} = require('@services/');
+const Crypto = require('./crypto');
+// const {TokenService, UsersService, Crypto} = require('@services');
+// const {TokenService, Crypto} = require('./');
 const {AuthError} = require('@errors/');
 
 
@@ -24,9 +27,10 @@ const signIn = async signInInfo => {
         throw new AuthError("User with such credentials doesn't exist");
     }
 
-    // TODO: Natalie - compare encoded password
+    // TODO: Natalie - compare encoded password - done
     const user = existingUsers[0];
-    if(user.password !== signInInfo.password) {
+    const result = await Crypto.compare(signInInfo.password, user.password);
+    if(!result) {
         throw new AuthError("User with such credentials doesn't exist");
     }
 
@@ -34,15 +38,14 @@ const signIn = async signInInfo => {
 };
 
 const register = async registrationInfo => {
-    // TODO: Natalie - encode password
     const existingUsers = await UsersService.find({email: registrationInfo.email});
     if(existingUsers && existingUsers.length > 0) {
         throw new AuthError("User with such credentials already exists");
     }
 
-    const encodedPassword = registrationInfo.password;
-    const user = await UsersService.add({email: registrationInfo.email, password: encodedPassword});
-    return user;
+    // TODO: Natalie - encode password - done
+    const encodedPassword = await Crypto.encrypt(registrationInfo.password);
+    return UsersService.add({email: registrationInfo.email, password: encodedPassword});
 };
 
 const AuthService = {
